@@ -1,26 +1,54 @@
-import React, { createContext, useState } from 'react';
+// src/context/NotesContext.js
+import React, { createContext, useState, useEffect } from 'react';
+import { initDB, fetchNotes, insertNote, deleteNoteFromDB, updateNoteInDB } from '../database/db';
 
 export const NotesContext = createContext();
 
 export const NotesProvider = ({ children }) => {
-  const [notes, setNotes] = useState([
-    { id: '1', title: 'Meeting with Team', content: 'Discuss project milestones...', date: new Date('2023-04-27') },
-    { id: '2', title: 'Grocery List', content: 'Milk, Eggs, Bread...', date: new Date('2023-04-26') },
-    { id: '3', title: 'Travel Itinerary', content: 'Flight at 8 AM...', date: new Date('2023-04-25') },
-  ]);
+  const [notes, setNotes] = useState([]);
 
-  const addNote = (title, content) => {
-    const newNote = {
-      id: Date.now().toString(),
-      title: title,
-      content: content,
-      date: new Date(), // Current date/time
-    };
-    setNotes([newNote, ...notes]);
+  // Load notes when app starts
+  useEffect(() => {
+    initDB()
+      .then(() => loadNotes())
+      .catch((err) => console.log('DB Init Error:', err));
+  }, []);
+
+  const loadNotes = () => {
+    fetchNotes()
+      .then((data) => setNotes(data))
+      .catch((err) => console.log('Fetch Error:', err));
+  };
+
+  const addNote = async (title, content) => {
+    try {
+      await insertNote(title, content);
+      loadNotes(); // Refresh list
+    } catch (error) {
+      console.log('Add Error:', error);
+    }
+  };
+
+  const updateNote = async (id, title, content) => {
+    try {
+      await updateNoteInDB(id, title, content);
+      loadNotes();
+    } catch (error) {
+      console.log('Update Error:', error);
+    }
+  };
+
+  const deleteNote = async (id) => {
+    try {
+      await deleteNoteFromDB(id);
+      loadNotes();
+    } catch (error) {
+      console.log('Delete Error:', error);
+    }
   };
 
   return (
-    <NotesContext.Provider value={{ notes, addNote }}>
+    <NotesContext.Provider value={{ notes, addNote, deleteNote, updateNote }}>
       {children}
     </NotesContext.Provider>
   );
