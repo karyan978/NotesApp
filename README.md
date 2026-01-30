@@ -53,9 +53,12 @@ npx expo install react-native-screens react-native-safe-area-context
 npx expo start
 
 📱 App Preview
-<div style="d-flex">
-<img width="481" height="974" alt="image" src="https://github.com/user-attachments/assets/5dc72ebf-4909-481c-b017-9af03f42b5e7" />
-<img width="479" height="986" alt="image" src="https://github.com/user-attachments/assets/3463b2da-6fe2-48a9-b2bf-932a7b8ac050" />
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/5dc72ebf-4909-481c-b017-9af03f42b5e7" width="220" />
+  <img src="https://github.com/user-attachments/assets/3463b2da-6fe2-48a9-b2bf-932a7b8ac050" width="220" />
+  <img src="https://github.com/user-attachments/assets/a40185be-fd10-4e27-bf2e-de9b82751182" width="220" />
+</p>
+
 </div>
 
 
